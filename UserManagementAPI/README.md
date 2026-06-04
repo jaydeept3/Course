@@ -6,6 +6,9 @@ User management API for TechHive Solutions internal HR and IT tooling.
 
 - ASP.NET Core Web API project named `UserManagementAPI`
 - In-memory user store using a repository pattern
+- Middleware for request/response audit logging
+- Middleware for standardized global exception handling
+- Token-based authentication protecting all user endpoints
 - Full CRUD endpoints for users:
   - `GET /api/users`
   - `GET /api/users/{id}`
@@ -23,6 +26,9 @@ User management API for TechHive Solutions internal HR and IT tooling.
 - `Contracts/UpdateUserRequest.cs`: update payload contract
 - `Repositories/IUserRepository.cs`: repository contract
 - `Repositories/InMemoryUserRepository.cs`: in-memory repository implementation
+- `Middleware/RequestResponseLoggingMiddleware.cs`: audit logging middleware
+- `Middleware/GlobalExceptionMiddleware.cs`: centralized exception handling
+- `Security/StaticTokenAuthenticationHandler.cs`: token authentication handler
 - `UserManagementAPI.http`: CRUD endpoint test requests
 
 ## Run locally
@@ -33,6 +39,11 @@ dotnet run --urls http://localhost:5055
 ```
 
 ## Test CRUD endpoints (Postman or VS Code REST Client)
+
+Use Bearer token authentication for all requests.
+
+- Header: `Authorization: Bearer techhive-dev-token`
+- Config location: `appsettings.json` and `appsettings.Development.json` under `Authentication:Token`
 
 1. `POST /api/users` to create a user.
 2. Copy the returned `id`.
@@ -56,3 +67,4 @@ You can also run the prebuilt requests in `UserManagementAPI.http`.
 
 - Data is stored in-memory and resets when the app restarts.
 - This is suitable for development and internal prototyping.
+- Replace the development token with a secure secret source (environment variables, key vault, or secret manager) before production use.

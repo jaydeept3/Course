@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication;
 using UserManagementAPI.Contracts;
+using UserManagementAPI.Middleware;
 using UserManagementAPI.Models;
 using UserManagementAPI.Repositories;
+using UserManagementAPI.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
+builder.Services
+    .AddAuthentication("Bearer")
+    .AddScheme<AuthenticationSchemeOptions, StaticTokenAuthenticationHandler>("Bearer", _ =>
+    {
+    });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -18,8 +30,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
-var usersApi = app.MapGroup("/api/users");
+var usersApi = app.MapGroup("/api/users").RequireAuthorization();
 
 usersApi.MapGet("/", (IUserRepository repository) =>
 {

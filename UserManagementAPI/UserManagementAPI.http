@@ -1,21 +1,25 @@
 @UserManagementAPI_HostAddress = http://localhost:5055
 @UserId = 11111111-1111-1111-1111-111111111111
+@Token = techhive-dev-token
 
 ### Get all users
 GET {{UserManagementAPI_HostAddress}}/api/users
 Accept: application/json
+Authorization: Bearer {{Token}}
 
 ###
 
 ### Get user by ID
 GET {{UserManagementAPI_HostAddress}}/api/users/{{UserId}}
 Accept: application/json
+Authorization: Bearer {{Token}}
 
 ###
 
 ### Create user
 POST {{UserManagementAPI_HostAddress}}/api/users
 Content-Type: application/json
+Authorization: Bearer {{Token}}
 
 {
 	"firstName": "Ava",
@@ -29,6 +33,7 @@ Content-Type: application/json
 ### Update user
 PUT {{UserManagementAPI_HostAddress}}/api/users/{{UserId}}
 Content-Type: application/json
+Authorization: Bearer {{Token}}
 
 {
 	"firstName": "Ava",
@@ -42,3 +47,4 @@ Content-Type: application/json
 
 ### Delete user
 DELETE {{UserManagementAPI_HostAddress}}/api/users/{{UserId}}
+Authorization: Bearer {{Token}}
