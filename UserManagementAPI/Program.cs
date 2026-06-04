@@ -21,7 +21,6 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
-app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -32,6 +31,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
 var usersApi = app.MapGroup("/api/users").RequireAuthorization();
 

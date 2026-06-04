@@ -23,15 +23,18 @@ public class GlobalExceptionMiddleware
         {
             _logger.LogError(ex, "Unhandled exception while processing {Method} {Path}", context.Request.Method, context.Request.Path);
 
+            if (context.Response.HasStarted)
+            {
+                throw;
+            }
+
+            context.Response.Clear();
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = "application/json";
 
             var payload = new
             {
-                errorCode = "INTERNAL_SERVER_ERROR",
-                message = "An unexpected error occurred.",
-                traceId = context.TraceIdentifier,
-                timestampUtc = DateTime.UtcNow
+                error = "Internal server error."
             };
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(payload));
