@@ -1,0 +1,30 @@
+## Build artifacts
+bin/
+obj/
+
+## User-specific files
+*.user
+*.rsuser
+*.suo
+
+## IDE folders
+.vs/
+.vscode/
+
+## Logs
+*.log
+logs/
+
+## OS-generated files
+.DS_Store
+Thumbs.db
+
+## Test and coverage outputs
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+## Local app settings and secrets
+appsettings.Local.json
+secrets.json
